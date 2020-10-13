@@ -35,7 +35,7 @@ let getStatusIncome = function() {
     return ('У вас средний уровень дохода.');
   } else if (budgetDay > 0) {
     return ('У вас низкий уровень дохода(');
-  } else if (budgetDay == 0) {
+  } else if (+budgetDay === 0) {
     return ('У вас нулевой доход, и больше нечего добавить :-)');
   } else {
     return ('Что-то пошло не так...');
