@@ -36,13 +36,13 @@ let getExpensesMonth = function() {
   for (let i = 0; i < 2; i++) {
 
     expenses[i] = prompt ('Введите обязательную статью расходов:');
-    let amountExpens = +prompt ('Во сколько это обойдётся?'); 
+    let amountExpens = prompt ('Во сколько это обойдётся?'); 
 
     while (!isNumber(amountExpens)) {
-      amountExpens = +prompt ('Во сколько это обойдётся?'); 
+      amountExpens = prompt ('Во сколько это обойдётся?'); 
     }
 
-    sum += amountExpens;
+    sum += Number(amountExpens);
   }   
   console.log(expenses);
   return sum;
@@ -83,7 +83,7 @@ if (targetMonth < 0) {
 
 let budgetDay = Math.floor(accumulatedMonth / 30);
 
-console.log('Расходы за месяц: ', +expensesAmount);
+console.log('Расходы за месяц: ', expensesAmount);
 console.log(addExpenses.split(','));
 console.log('Бюджет на день: ', budgetDay);
 console.log(getStatusIncome());
