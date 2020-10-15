@@ -5,20 +5,20 @@ let isNumber = function(n) {
 };
 
 let money;
+let start = function() {
+  money = prompt ('Ваш ежемесячный доход?');
+     while (!isNumber(money)) {
+      money = prompt ('Ваш ежемесячный доход?');      
+    }
+};
+
+start();
+
 let income = 'фриланс';
 let addExpenses = prompt ('Перечислите возможные расходы за рассчитываемый период через запятую. Например, так:', 'коммуналка, маршрутка, интернет');
 let deposit = confirm ('Есть ли у Вас депозит в банке?');
 let mission = 10000;
 
-let start = function() {
-  money = prompt ('Ваш ежемесячный доход?');
-
-  while (!isNumber(money)) {
-    money = prompt ('Ваш ежемесячный доход?');
-  }
-};
-
-start();
 
 let showTypeOf = function(data) {
   console.log(data, typeof (data)); 
