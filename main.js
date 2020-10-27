@@ -26,6 +26,10 @@ periodSelect = document.querySelector('.period-select'),
 incomeItems = document.querySelectorAll('.income-items'),
 periodAmount = document.querySelector('.period-amount');
 
+periodSelect.addEventListener('input', function(event) {
+  periodAmount.textContent = periodSelect.value;
+});
+
 let appData = {
   budget: 0,
   budgetDay: 0,
@@ -47,11 +51,8 @@ let appData = {
     appData.getExpensesMonth();    
     appData.getAddExpenses();
     appData.getAddIncome();
-    appData.getBudget();    
+    appData.getBudget();  
 
-    periodSelect.addEventListener('input', function(event) {
-      periodAmount.textContent = periodSelect.value;
-    });
 
     appData.showResult();
   },
