@@ -27,8 +27,6 @@ incomeItems = document.querySelectorAll('.income-items'),
 periodAmount = document.querySelector('.period-amount'),
 btnCancel = document.getElementById('cancel'),
 allDataItems = document.getElementsByClassName('data');
-// allDataInputs = document.querySelectorAll('.data input[type=text]');
-
 
 let appData = {
   budget: 0,
@@ -43,8 +41,27 @@ let appData = {
   deposit: false,
   persentDeposit: 0,
   moneyDeposit: 0,
+  check: function() {
+    if (salaryAmount.value !== '') {
+      start.removeAttribute('disabled');
+    }
+  },
  
-  start: function() {  
+  start: function() { 
+    if (salaryAmount.value === '') {
+      start.setAttribute('disabled', true);
+      return
+    };
+
+    let allDataInputs = document.querySelectorAll('.data input[type=text]');
+      allDataInputs.forEach(function(item) {
+        item.setAttribute('disabled', '');
+      });
+    periodSelect.setAttribute('disabled', '');
+      
+    start.style.display ='none';
+    btnCancel.style.display = 'block';
+    
     this.budget = salaryAmount.value;
     this.getExpenses();    
     this.getIncome();    
@@ -238,34 +255,15 @@ let appData = {
   },
 };
 
-start.addEventListener('click', function(event) { 
-  if (salaryAmount.value === '') {
-    event.preventDefault();
-  } else {
-    appData.start();
-    start.style.display ='none';
-    btnCancel.style.display = 'block';
-
-    let blockAllDataInputs = function() {
-      salaryAmount.setAttribute('disabled', '');
-      let allDataInputs = document.querySelectorAll('.data input[type=text]');
-      allDataInputs.forEach(function(item) {
-        item.setAttribute('disabled', '');
-      }); 
-      periodSelect.setAttribute('disabled', ''); 
-    }; 
-    blockAllDataInputs();
-  };
-});
-
 periodSelect.addEventListener('input', function(event) {
   periodAmount.textContent = periodSelect.value;
 });
 
+btnCancel.addEventListener('click', appData.reset.bind(appData));
+start.addEventListener('click', appData.start.bind(appData));
 incomePlus.addEventListener('click', appData. addIncomeBlock);
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
-
-btnCancel.addEventListener('click', appData.reset.bind(appData));
+salaryAmount.addEventListener('keyup', appData.check);
 
 appData.getTargetMonth();
 appData.calcPeriod();
