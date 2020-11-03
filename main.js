@@ -61,7 +61,7 @@ AppData.prototype.start = function() {
     allDataInputs.forEach(function(item) {
       item.setAttribute('disabled', 'true');
     });
-  periodSelect.setAttribute('disabled', 'true');
+
   btnPlus[0].setAttribute('disabled', 'true');
   btnPlus[1].setAttribute('disabled', 'true');  
   start.style.display ='none';
@@ -219,7 +219,6 @@ AppData.prototype.reset = function() {
   inputTextData.forEach(function (item) {
     item.value = '';
     item.removeAttribute('disabled');
-    periodSelect.removeAttribute('disabled');
     periodSelect.value = 0;
     periodAmount.innerHTML = periodSelect.value;
    });
@@ -228,15 +227,16 @@ AppData.prototype.reset = function() {
     item.value = '';  
   });
 
-  for (let i = 1; i < incomeItems.length; i++) {
-    incomeItems[i].parentNode.removeChild(incomeItems[i]);
-    incomePlus.style.display = 'block';
-  };
 
-  for (let i = 1; i < expensesItems.length; i++) {
-    expensesItems[i].parentNode.removeChild(expensesItems[i]);
-    expensesPlus.style.display = 'block';
-  };
+  for (let i = expensesItems.length - 1; i > 0; i--) {
+    expensesItems[i].remove();
+    expensesPlus.style.display = 'block';    
+  }
+
+  for (let i = incomeItems.length - 1; i > 0; i--) {
+      incomeItems[i].remove();
+      incomePlus.style.display = 'block';
+  }
 
   this.budget = 0;
   this.budgetDay = 0;
@@ -255,7 +255,7 @@ AppData.prototype.reset = function() {
   btnCancel.style.display = 'none';
   incomePlus.removeAttribute('disabled', 'true');
   expensesPlus.removeAttribute('disabled', 'true');
-  periodSelect.removeAttribute('disabled', 'true'); 
+  // periodSelect.removeAttribute('disabled', 'true'); 
 };
 
 AppData.prototype.eventListeners = function() {
