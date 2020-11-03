@@ -53,16 +53,17 @@ AppData.prototype.check = function() {
 AppData.prototype.start = function() {
    
   if (salaryAmount.value === '') {
-    start.setAttribute('disabled', true);
+    start.setAttribute('disabled', 'true');
     return
   };
 
   let allDataInputs = document.querySelectorAll('.data input[type=text]');
     allDataInputs.forEach(function(item) {
-      item.setAttribute('disabled', '');
+      item.setAttribute('disabled', 'true');
     });
-  periodSelect.setAttribute('disabled', '');
-    
+  periodSelect.setAttribute('disabled', 'true');
+  btnPlus[0].setAttribute('disabled', 'true');
+  btnPlus[1].setAttribute('disabled', 'true');  
   start.style.display ='none';
   btnCancel.style.display = 'block';
   
@@ -85,8 +86,9 @@ AppData.prototype.showResult = function() {
   additionalIncomeValue.value = this.addIncome.join(' ,');
   targetMonthValue.value = Math.ceil(this.getTargetMonth());
   incomePeriodValue.value = this.calcPeriod();
+  const _this = this;
   periodSelect.addEventListener('change', function(event) {
-    incomePeriodValue.value = this.calcPeriod();
+    incomePeriodValue.value = _this.calcPeriod();
   });
 };
 
@@ -123,7 +125,7 @@ AppData.prototype.getExpenses = function() {
 AppData.prototype.getIncome = function () {
   const _this = this;
   incomeItems.forEach(function(item) {
-    console.log('this: getIncome:', this); 
+    console.log('this: getIncome:', _this); 
     let itemIncome = item.querySelector('.income-title').value;
     let cashIncome = item.querySelector('.income-amount').value;      
   if (itemIncome !=='' && cashIncome !== '') {
@@ -139,8 +141,7 @@ for (let key in this.income) {
 AppData.prototype.getAddExpenses = function() {
   const _this = this;
   let addExpenses = additionalExpensesItem.value.split(',');
-  addExpenses.forEach(function(item){
-    console.log('this: getAddExpenses: ', this); 
+  addExpenses.forEach(function(item){ 
     item = item.trim();
     if (item !== '') {
       _this.addExpenses.push(item);
@@ -151,7 +152,6 @@ AppData.prototype.getAddExpenses = function() {
 AppData.prototype.getAddIncome = function() {
   const _this = this;
   additionalIncomeItem.forEach(function(item){
-    console.log('this: getAddIncome', this); 
     let itemValue = item.value.trim();
     if (itemValue !== '') {
       _this.addIncome.push(itemValue);
@@ -219,6 +219,7 @@ AppData.prototype.reset = function() {
   inputTextData.forEach(function (item) {
     item.value = '';
     item.removeAttribute('disabled');
+    periodSelect.removeAttribute('disabled');
     periodSelect.value = 0;
     periodAmount.innerHTML = periodSelect.value;
    });
@@ -252,13 +253,13 @@ AppData.prototype.reset = function() {
 
   start.style.display ='block';
   btnCancel.style.display = 'none';
-  incomePlus.removeAttribute('disabled');
-  expensesPlus.removeAttribute('disabled');
-  periodSelect.removeAttribute('disabled'); 
+  incomePlus.removeAttribute('disabled', 'true');
+  expensesPlus.removeAttribute('disabled', 'true');
+  periodSelect.removeAttribute('disabled', 'true'); 
 };
 
 AppData.prototype.eventListeners = function() {
-  periodSelect.addEventListener('input', function(event) {
+  periodSelect.addEventListener('change', function(event) {
     periodAmount.textContent = periodSelect.value;
   });
   
