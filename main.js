@@ -47,7 +47,7 @@ class AppData {
   check() {
     if (salaryAmount.value !== '') {
       start.removeAttribute('disabled');
-    }
+    }    
   }
   start() {
 
@@ -66,7 +66,7 @@ class AppData {
     start.style.display = 'none';
     btnCancel.style.display = 'block';
 
-    this.budget = salaryAmount.value;
+    this.budget = salaryAmount.value;    
     this.getExpenses();
     this.getIncome();
     this.getExpensesMonth();
@@ -74,7 +74,7 @@ class AppData {
     this.getAddIncome();
     this.getBudget();
 
-    this.showResult();
+    this.showResult();   
   }
   showResult() {
     budgetMonthValue.value = this.budgetMonth;
@@ -83,11 +83,7 @@ class AppData {
     additionalExpensesValue.value = this.addExpenses.join(' ,');
     additionalIncomeValue.value = this.addIncome.join(' ,');
     targetMonthValue.value = Math.ceil(this.getTargetMonth());
-    incomePeriodValue.value = this.calcPeriod();
-    const _this = this;
-    periodSelect.addEventListener('change', function (event) {
-      incomePeriodValue.value = this.calcPeriod();
-    });
+    incomePeriodValue.value = this.calcPeriod();  
   }
   addExpensesBlock() {
     const cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -181,17 +177,25 @@ class AppData {
       this.persentDeposit = prompt('Какой годовой процент депозита?', 10);
       while (!isNumber(this.persentDeposit)) {
         this.persentDeposit = prompt('Какой годовой процент депозита?', 10);
-      };
+      }
       this.moneyDeposit = prompt('Какая сумма заложена?', 10000);
       while (!isNumber(this.moneyDeposit)) {
         this.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-      };
-    };
+      }
+    }
   }
   calcPeriod() {
     return this.budgetMonth * periodSelect.value;
   }
+
   reset() {
+
+    class AppDataReset extends AppData {
+      
+    } 
+    Object.assign(AppDataReset, appData);
+    const resetAppData = new AppDataReset();
+    
     const inputTextData = document.querySelectorAll('.data input[type=text');
     const resultInputAll = document.querySelectorAll('.result  input[type=text');
 
@@ -215,37 +219,49 @@ class AppData {
     for (let i = incomeItems.length - 1; i > 0; i--) {
       incomeItems[i].remove();
       incomePlus.style.display = 'block';
-    }
+    };
 
-    this.budget = 0;
-    this.budgetDay = 0;
-    this.budgetMonth = 0;
-    this.income = {};
-    this.incomeMonth = 0;
-    this.addIncome = [];
-    this.expensesMonth = 0;
-    this.expenses = {};
-    this.addExpenses = [];
-    this.deposit = false;
-    this.persentDeposit = 0;
-    this.moneyDeposit = 0;
-
-    start.style.display = 'block';
+    start.style.display = 'block';    
     btnCancel.style.display = 'none';
     incomePlus.removeAttribute('disabled', 'true');
     expensesPlus.removeAttribute('disabled', 'true');
+
+    resetAppData.removeEventListeners();
   }
+
   eventListeners() {
     periodSelect.addEventListener('change', (event) => {
       periodAmount.textContent = periodSelect.value;
     });
 
+    let countIncomBtnPlus = 0;
+    let countExpensesBtnPlus = 0;
+
     btnCancel.addEventListener('click', this.reset.bind(this));
     start.addEventListener('click', this.start.bind(this));
     incomePlus.addEventListener('click', this.addIncomeBlock);
+    if(incomePlus) {countIncomBtnPlus++};
     expensesPlus.addEventListener('click', this.addExpensesBlock);
+    if(expensesPlus) {countExpensesBtnPlus++};
     salaryAmount.addEventListener('keyup', this.check);
   }
+
+  removeEventListeners() {
+    periodSelect.removeEventListener('change', (event) => {
+      periodAmount.textContent = periodSelect.value;
+    });
+
+    btnCancel.removeEventListener('click', this.reset.bind(this));
+    start.removeEventListener('click', this.start.bind(this));
+    if(this.countIncomBtnPlus > 1) {
+      incomePlus.removeEventListener('click', this.addIncomeBlock);
+    }
+    if(this.countExpensesBtnPlus > 1) {
+      expensesPlus.removeEventListener('click', this.addExpensesBlock);
+    }    
+    salaryAmount.removeEventListener('keyup', this.check);
+  }
+   
 }
 
 const appData = new AppData();
