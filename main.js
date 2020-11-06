@@ -189,8 +189,8 @@ class AppData {
   }
 
   reset() {
-
-    Object.assign(resetAppData, appData);
+    const resetAppData = new AppData();
+    Object.assign(appData, resetAppData);
 
     const inputTextData = document.querySelectorAll('.data input[type=text');
     const resultInputAll = document.querySelectorAll('.result  input[type=text');
@@ -261,7 +261,6 @@ class AppData {
 }
 
 const appData = new AppData();
-const resetAppData = new AppData();
 
 appData.eventListeners();
 appData.getTargetMonth();
