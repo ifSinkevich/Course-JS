@@ -57,7 +57,7 @@ class AppData {
     if (salaryAmount.value === '') {
       start.setAttribute('disabled', 'true');
       return;
-    };
+    };   
 
     const allDataInputs = document.querySelectorAll('.data input[type=text]');
     allDataInputs.forEach((item) => {
@@ -220,34 +220,42 @@ class AppData {
 
     start.style.display = 'block';    
     btnCancel.style.display = 'none';
+    depositBank.value = '';
+    depositAmount.value = '';
+    depositPercent.value = '';
+    depositPercent.style.display = 'none';
     incomePlus.removeAttribute('disabled', 'true');
-    expensesPlus.removeAttribute('disabled', 'true');
-
+    expensesPlus.removeAttribute('disabled', 'true');    
     resetAppData.removeEventListeners();
   }
 
   changePersent() {
-    const valueSelect = this.value;
+    let valueSelect = this.value;
     if(valueSelect === 'other') {
-      depositPercent.style.display = 'inline-block';
-      this.deposit = true;
-      depositPercent.addEventListener('change', (event) => {
-        // const inputOtherPersent = document.querySelector('.deposit-percent input[type=text').value;
-        const inputOtherPersent = depositPercent.value;
-
-        if(!isNumber(inputOtherPersent) || inputOtherPersent < 0 || inputOtherPersent > 100) {
-          alert('Введите корректное значение в поле проценты');
-          start.setAttribute('disabled', 'true');
+      depositPercent.style.display = 'inline-block';     
+      depositPercent.addEventListener('change', (event) => {        
+        console.log('change: '); 
+        valueSelect = depositPercent.value;        
+        console.log('valueSelect: ', valueSelect);
+               
+        if (!isNumber(depositPercent.value) || depositPercent.value <= 0 || depositPercent.value > 100) {
+          depositPercent.style.backgroundColor = 'red';
+          depositPercent.value  = 0;          
+          alert('Введите корректное значение в поле проценты');         
+          start.setAttribute('disabled', 'true'); 
+                        
+        } else {
+          depositPercent.style.backgroundColor = 'white';
+          valueSelect = depositPercent.value;
         }
         
       });
-      
+     
     } else {
       depositPercent.value = valueSelect;
-    }   
-
+    }
     console.log('valueSelect: ', valueSelect);
-    console.log('inputOtherPersent: ', this.inputOtherPersent);
+    
   }
 
   depositHandler() {
@@ -259,8 +267,10 @@ class AppData {
     } else {
       depositBank.style.display = 'none';
       depositAmount.style.display = 'none';
+      depositPercent.style.display = 'none';
       depositBank.value = '';
       depositAmount.value = '';
+      depositPercent.value = '';
       this.deposit = false;
       depositBank.removeEventListener('change', this.changePersent);
     }
@@ -299,6 +309,7 @@ class AppData {
       expensesPlus.removeEventListener('click', this.addExpensesBlock);
     }    
     salaryAmount.removeEventListener('keyup', this.check);
+    depositCheck.removeEventListener('change', this.depositHandler.bind(this));
   }
    
 }
